@@ -27,6 +27,7 @@ unicode_map = {
     "space": ord(' '),
     "hairspace": int("200A", 16),
     "thinspace": int("2009", 16),
+    "hyphen": ord('-'),
     "comma": ord(',')}
 
 class AttrDict(dict):
@@ -58,8 +59,22 @@ def make_woff2(files, destination):
     woff2.compress(file, outfilename)
 
 
+def get_unicode(name):
+    try:
+        if len(name) == 1:
+            return ord(name)
+        elif len(name) == 2 and name[1] == "_":
+            return ord(name[0])
+        elif name[:2] == "U+":
+            return int(name[2:], 16)
+        else:
+            return unicode_map[name]
+    except (KeyError, ValueError):
+        return None
+
+
 def bin2glyph(binary_data, name, width=0, height=0, transform=None,
-             version=2):
+             version=2, unicodes=None):
     """ Convert an SVG outline to a UFO glyph, and assign the given 'name',
     advance 'width' and 'height' (int), 'unicodes' (list of int) to the
     generated glyph.
@@ -72,15 +87,14 @@ def bin2glyph(binary_data, name, width=0, height=0, transform=None,
         right_bearing = 0
     glyph = DotOutline.fromdata(binary_data, transform=transform, right_bearing=right_bearing)
     glyph.name = name
-    if len(name) == 1:
-        unicode = ord(name)
-    elif len(name) == 2 and name[1] == "_":
-        unicode = ord(name[0])
-    elif name[:2] == "U+":
-        unicode = int(name[2:], 16)
+    if unicodes is not None:
+        glyph.unicodes = unicodes
     else:
-        unicode = unicode_map[name]
-    glyph.unicodes = [unicode]
+        u = get_unicode(name)
+        if u is not None:
+            glyph.unicodes = [u]
+        else:
+            glyph.unicodes = []
     return glyph
 
 
@@ -243,16 +257,70 @@ def create_ufo(name, path, character_data, format, info):
     writer = UFOWriter(f"{path}/{name}.ufo")
     glyphset = writer.getGlyphSet()
     character_data, alternatives = character_data
+
+    def get_safe_name(n):
+        digit_map = {
+            "0": "zero",
+            "1": "one",
+            "2": "two",
+            "3": "three",
+            "4": "four",
+            "5": "five",
+            "6": "six",
+            "7": "seven",
+            "8": "eight",
+            "9": "nine"
+        }
+        parts = n.split('.', 1)
+        base = parts[0]
+        suffix = ""
+        if len(parts) > 1:
+            suffix = "." + parts[1]
+            
+        if base in digit_map:
+            return digit_map[base] + suffix
+
+        if n[0].isdigit():
+            return f"_{n}"
+        if n == "-":
+            return "hyphen"
+        return n
+
     for character, data in character_data.items():
+        safe_name = get_safe_name(character)
+        unicodes = []
+        u = get_unicode(character)
+        if u is not None:
+            unicodes = [u]
+
         try:
-            glif = bin2glyph(data, character,
-                             version=format)
+            glif = bin2glyph(data, safe_name,
+                             version=format, unicodes=unicodes)
         except:
             print("Skipping", character)
-            # TODO: Need to handle stylistic alternatives
-            # https://adobe-type-tools.github.io/afdko/OpenTypeFeatureFileSpecification.html#8.c
             continue
-        glyphset.writeGlyph(character, glif, glif.drawPoints, format)
+        glyphset.writeGlyph(safe_name, glif, glif.drawPoints, format)
+
+    features = []
+    for set_name, chars in alternatives.items():
+        feature_lines = [f"feature {set_name} {{"]
+        for character, data in chars.items():
+            safe_char_name = get_safe_name(character)
+            glyph_name = f"{character}.{set_name}"
+            safe_glyph_name = get_safe_name(glyph_name)
+
+            try:
+                glif = bin2glyph(data, safe_glyph_name, version=format, unicodes=[])
+            except Exception as e:
+                print(f"Skipping {safe_glyph_name}: {e}")
+                continue
+            glyphset.writeGlyph(safe_glyph_name, glif, glif.drawPoints, format)
+            feature_lines.append(f"    sub {safe_char_name} by {safe_glyph_name};")
+        feature_lines.append(f"}} {set_name};")
+        features.append("\n".join(feature_lines))
+
+    if features:
+        writer.writeFeatures("\n\n".join(features))
 
     glyphset.writeContents()
     writer.writeLayerContents()
@@ -304,7 +372,9 @@ def main(args=None):
 
     FontProject().run_from_ufos("out/*.ufo", ("otf", "ttf"), output_dir="out")
     make_woff2(["out/seattle_transit_dot_matrix_7.otf"], "out")
+    make_woff2(["out/seattle_transit_dot_matrix_12.otf"], "out")
     make_woff2(["out/seattle_transit_dot_matrix_15.otf"], "out")
+    make_woff2(["out/seattle_transit_dot_matrix_16.otf"], "out")
 
 if __name__ == "__main__":
     main()
