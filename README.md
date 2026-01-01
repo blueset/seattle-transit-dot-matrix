@@ -18,6 +18,10 @@ Arrival time boards at King County Metro and Sound Transit bus stations in Seatt
 
 Used for Link Light Rail train interior displays on newer cars.
 
+## Seattle Transit Dot Matrix 14
+
+Used for Link Light Rail train interior displays on some cars.
+
 ## Seattle Transit Dot Matrix 15
 
 Used on Link Light Rail station platforms (Angle Lake to Westlake). 2 dot weight. Upper and lower case.
