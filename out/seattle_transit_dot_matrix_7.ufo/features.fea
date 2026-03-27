@@ -1,0 +1,4 @@
+feature ss01 {
+    sub one by one.ss01;
+    sub i by i.ss01;
+} ss01;

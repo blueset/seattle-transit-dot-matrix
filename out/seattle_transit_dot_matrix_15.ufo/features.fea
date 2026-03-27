@@ -1,0 +1,4 @@
+feature ss01 {
+    sub U+1F3C3 by U+1F3C3.ss01;
+    sub U+2460 by U+2460.ss01;
+} ss01;
