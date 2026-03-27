@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sound Transit Dot Matrix Typefaces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wdth,wght,YTLC@0,6..12,75..125,200..1000,440..540;1,6..12,75..125,200..1000,440..540&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1 class="site-title">Sound Transit Dot Matrix</h1>
+      <nav>
+        <a href="#sample">Sample</a>
+        <a href="#tester">Tester</a>
+        <a href="#glyphs">Glyphs</a>
+        <a href="https://github.com/blueset/seattle-transit-dot-matrix">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="sample">
+      <h2>Sample</h2>
+      <div class="display-board">
+        <div class="font-7 display-row" data-font="7">2026-02-01 12:34</div>
+        <div>
+          <span class="font-14 display-row" data-font="14">Welcome onboard </span>
+          <span class="font-16 display-row" data-font="16">SOUND TRANSIT</span>
+        </div>
+        <div class="font-12 display-row" data-font="12">NORTHBOUND</div>
+        <div><span class="font-15 display-row" data-font="15">1 to Lynnwood </span><span class="font-7 display-row" data-font="7">10 min<span class="display-green">🛜</span></span></div>
+        <div class="font-12 display-row" data-font="12">SOUTHBOUND</div>
+        <div><span class="font-15 display-row" data-font="15">2 to Redmond Downtown </span><span class="font-7 display-row" data-font="7">5 min<span class="display-green">🛜</span></span></div>
+      </div>
+    </section>
+
+    <section id="tester">
+      <h2>Tester</h2>
+      <div class="tester-rows">
+        <div class="tester-row" data-font="7">
+          <label>Dot Matrix 7</label>
+          <div class="font-7 tester-wrap">
+            <div class="tester-input" contenteditable="true" spellcheck="false" data-dot-height="7">Seattle Transit</div>
+          </div>
+        </div>
+        <div class="tester-row" data-font="12">
+          <label>Dot Matrix 12</label>
+          <div class="font-12 tester-wrap">
+            <div class="tester-input" contenteditable="true" spellcheck="false" data-dot-height="12">RETURNING TRAIN</div>
+          </div>
+        </div>
+        <div class="tester-row" data-font="14">
+          <label>Dot Matrix 14</label>
+          <div class="font-14 tester-wrap">
+            <div class="tester-input" contenteditable="true" spellcheck="false" data-dot-height="14">Capitol Hill</div>
+          </div>
+        </div>
+        <div class="tester-row" data-font="15">
+          <label>Dot Matrix 15</label>
+          <div class="font-15 tester-wrap">
+            <div class="tester-input" contenteditable="true" spellcheck="false" data-dot-height="15">Next Stop</div>
+          </div>
+        </div>
+        <div class="tester-row" data-font="16">
+          <label>Dot Matrix 16</label>
+          <div class="font-16 tester-wrap">
+            <div class="tester-input" contenteditable="true" spellcheck="false" data-dot-height="16">WESTLAKE</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="glyphs">
+      <h2>Glyphs</h2>
+      <div class="font-selector">
+        <button class="font-btn active" data-font="7">Dot Matrix 7</button>
+        <button class="font-btn" data-font="12">Dot Matrix 12</button>
+        <button class="font-btn" data-font="14">Dot Matrix 14</button>
+        <button class="font-btn" data-font="15">Dot Matrix 15</button>
+        <button class="font-btn" data-font="16">Dot Matrix 16</button>
+      </div>
+      <div class="glyph-grid" id="glyph-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>SIL Open Font License. Based on Sound Transit’s displays.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -4,3 +4,7 @@
 .AppleDouble
 .LSOverride
 venv/
+
+# Generated site artifacts
+site/fonts/
+site/data/

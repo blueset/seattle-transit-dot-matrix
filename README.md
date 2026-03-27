@@ -1,10 +1,12 @@
 # Seattle Transit Dot Matrix Typefaces
 
-A set of dot matrix fonts in the style of Sound Transit's displays. Inspired by [London TFL Dot Matrix Typeface](https://github.com/petykowski/London-Underground-Dot-Matrix-Typeface).
+A set of dot matrix fonts in the style of Sound Transit’s displays. Inspired by [London TFL Dot Matrix Typeface](https://github.com/petykowski/London-Underground-Dot-Matrix-Typeface).
 
 Faithful to the original, but with some additional characters and stylistic alternates. Incomplete. Please contribute!
 
 <img src="https://raceconditionrunning.com/img/lrr23/lrr-og-banner.png" width="100%" alt="Light Rail Relay 2023">
+
+[View the website](https://blueset.github.io/seattle-transit-dot-matrix/).
 
 ## Seattle Transit Dot Matrix 7
 
